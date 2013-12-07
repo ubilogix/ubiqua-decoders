@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Disclaimer: IMPORTANT: This Ubilogix software is supplied to you by Ubilogix 
+    International Inc. ("Ubilogix") in consideration of your agreement to the 
+    following terms, and your use or modification of this Ubilogix software 
+    constitutes acceptance of these terms. If you do not agree to these terms, 
+    please do not use or modify this Ubilogix software. 
+      
+    In consideration of your agreement to abide by the following terms, and subject 
+    to these terms, Ubilogix grants you a personal, non-exclusive license, under 
+    Ubilogix's copyrights in this original Ubilogix software ("the Ubilogix 
+    Software"), to use and modify the Ubilogix Software provided that you must 
+    retain this notice and the following text and disclaimers. Except as expressly 
+    stated in this notice, no other rights or licenses, express or implied, are 
+    granted by Ubilogix herein, including but not limited to any patent rights that 
+    my be infringed by your derivative works or by other works in which the Ubilogix 
+    Software may be incorporated. 
+      
+    THE UBILOGIX SOFTWARE IS PROVIDED BY UBILOGIX ON AS "AS IS" BASIS. UBILOGIX 
+    MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE 
+    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A 
+    PARTICULAR PURPOSE, REGARDING THE UBILOGIX SOFTWARE OR ITS USE AND OPERATION 
+    ALONE OR IN COMBINATION WITH YOUR PRODUCTS. 
+      
+    IN NO EVENT SHALL UBILOGIX BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR 
+    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+    GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+    ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION 
+    OF THE UBILOGIX SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, 
+    TORT (INCLUDING NEGLICENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF UBILOGIX HAS 
+    BEEN ADVICED OF THE POSSIBLITY OF SUCH DAMAGE. 
+      
+    Copyright (C) 2013 Ubilogix International, Inc. All rights reserved. 
+      
+-->
+<xsd:schema xmlns="urn:ubilogix:decoders" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ubilogix:decoders" elementFormDefault="qualified" version="1.0.12">
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xsd:element name="Layer" type="LayerType"/>
+	<xsd:complexType name="LayerType">
+		<xsd:sequence>
+			<xsd:element name="Colors" type="ColorsType" minOccurs="0"/>
+			<xsd:element name="Variables" type="VariablesType" minOccurs="0"/>
+			<xsd:element name="Resources" type="ResourcesType" minOccurs="0"/>
+			<xsd:element name="Fields" type="FieldsType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:string" use="required"/>
+		<xsd:attribute name="ShortName" type="xsd:string" use="required"/>
+		<xsd:attribute name="Source" type="xsd:anyURI" use="optional"/>
+		<xsd:attribute name="Language" type="xsd:language" default="en-us"/>
+		<xsd:attribute name="Version" type="VersionType" default="1.0.0"/>
+	</xsd:complexType>
+	<xsd:complexType name="ColorsType">
+		<xsd:sequence>
+			<xsd:element name="Color" type="ColorType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ColorType">
+		<xsd:attribute name="Name" type="xsd:ID"/>
+		<xsd:attribute name="Value" type="ColorValueType"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ColorValueType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="#[0-9A-F]{6}|#[0-9A-F]{8}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="VariablesType">
+		<xsd:sequence>
+			<xsd:element name="Variable" type="VariableType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="VariableType">
+		<xsd:sequence>
+			<xsd:element name="Options" type="OptionsType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:ID" use="required"/>
+		<xsd:attribute name="Type" use="optional" default="Hexadecimal">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Hexadecimal"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Value" type="NullableHexStringType" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ResourcesType">
+		<xsd:sequence>
+			<xsd:element name="Options" type="OptionsType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Fields" type="FieldsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FieldsType">
+		<xsd:sequence>
+			<xsd:element name="Field" type="FieldType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:ID" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="FieldType">
+		<xsd:sequence>
+			<xsd:element name="Field.Length" type="FieldLengthType" minOccurs="0"/>
+			<xsd:element name="Options" type="OptionsType" minOccurs="0"/>
+			<xsd:element name="Trigger" type="TriggerType" minOccurs="0"/>
+			<xsd:element name="Triggers" type="TriggersType" minOccurs="0"/>
+			<xsd:element name="Break" type="BreakType" minOccurs="0"/>
+			<xsd:element name="DefaultFieldsGroup" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Field" type="FieldType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FieldsGroup" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Field" type="FieldType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+					<xsd:attribute name="Group" type="NullableHexStringType" use="required"/>
+					<xsd:attribute name="Label" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Field" type="FieldType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:ID" use="optional"/>
+		<xsd:attribute name="IsGroup" type="xsd:boolean" use="optional" default="false"/>
+		<xsd:attribute name="Label" type="xsd:string" use="optional" default="Reserved"/>
+		<xsd:attribute name="Offset" type="xsd:integer" use="optional"/>
+		<xsd:attribute name="Length" type="FieldLengthValueType" use="optional" default="Auto"/>
+		<xsd:attribute name="NodeColor" type="xsd:IDREF" use="optional"/>
+		<xsd:attribute name="Type" type="TypeValueType" use="optional" default="Hexadecimal"/>
+		<xsd:attribute name="IsRepeatable" type="xsd:boolean" use="optional" default="false"/>
+		<xsd:attribute name="Column" type="xsd:NCName" use="optional"/>
+		<xsd:attribute name="ColumnMergeMode" type="ColumnMergeModeValueType" use="optional" default="Append"/>
+		<xsd:attribute name="Endianness" type="EndiannessValueType" use="optional"/>
+		<xsd:attribute name="FieldsSource" type="xsd:IDREF" use="optional"/>
+		<xsd:attribute name="OptionsSource" type="xsd:IDREF" use="optional"/>
+		<xsd:attribute name="GroupsSource" type="xsd:IDREF" use="optional"/>
+		<xsd:attribute name="RepeatCount" type="xsd:IDREF" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="FieldLengthType">
+		<xsd:choice>
+			<xsd:element name="Binding" type="BindingType"/>
+			<xsd:element name="BindingGroup" type="BindingGroup"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="BindingType">
+		<xsd:sequence>
+			<xsd:element name="Case" type="CaseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="Source" type="xsd:IDREF"/>
+		<xsd:attribute name="DefaultResult" type="FieldLengthValueType" use="optional" default="0"/>
+		<xsd:attribute name="DefaultResultMultiplier" type="xsd:integer" use="optional"/>
+		<xsd:attribute name="DefaultResultPadding" type="xsd:integer" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="BindingGroup">
+		<xsd:sequence>
+			<xsd:element name="Binding" type="BindingType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="MatchMode" type="MatchModeType" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="MatchModeType">
+		<xsd:annotation>
+			<xsd:documentation>
+        How to handle the Binding objects. Possible values are Any (default) or All.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Any">
+				<xsd:annotation>
+					<xsd:documentation>
+            Each Binding will be evaluated until one of the results is different than 0 (default).
+            If there are no Bindings returning something different than 0, the result will be 0.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="All">
+				<xsd:annotation>
+					<xsd:documentation>
+            Each Binding will be evaluated and if the result of all Bindings is the same, it will
+            be result. If not, the result is 0.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CaseType">
+		<xsd:attribute name="Value" type="NullableHexRangeStringType"/>
+		<xsd:attribute name="Result" type="FieldLengthValueType"/>
+		<xsd:attribute name="ResultMultiplier" type="xsd:integer"/>
+		<xsd:attribute name="ResultPadding" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:simpleType name="FieldLengthValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+        The length of the field in bits. Possible values are Auto (default), Stretch, or an
+        integer. If the integer is negative, the length will be the length of the parent field plus
+        the negative integer.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="xsd:integer">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Auto">
+						<xsd:annotation>
+							<xsd:documentation>
+                Length is defined by the children fields (default).
+              </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="Stretch">
+						<xsd:annotation>
+							<xsd:documentation>
+                Length is the number of bits of the parent field minus the current offset.
+              </xsd:documentation>
+						</xsd:annotation>
+					</xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>
+	<xsd:simpleType name="TypeValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+        How to parse and display the field value.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Hexadecimal">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed as an unsigned integer and displayed as an hexadecimal string
+              (default).
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Bits">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed as an unsigned integer and displayed as an element of a bitmap.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Integer">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as an unsigned integer.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SignedInteger">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as a signed integer.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="String">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as an ASCII string.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Boolean">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as a boolean.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DateTime">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as a date time. Format should be "yyyy-MM-dd
+            HH:mm:ss.SSSSSS", as defined by the LDML standard.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Time">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as a time. Format should be "HH:mm:ss.SSSSSS", as
+            defined by the LDML standard.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Seconds">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed and displayed as seconds. Format should be "ss.SSSSSS", as
+            defined by the LDML standard.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SignalPower">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed as an integer and displayed with the "dBm" postfix.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Address">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed as an unsigned integer and displayed as an hexadecimal string
+            with digits separated by a colon only if the length is 6 or 8 bytes.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Key">
+				<xsd:annotation>
+					<xsd:documentation>
+            Value should be parsed as an hexadecimal string and displayed as a security key.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="OptionsType">
+		<xsd:sequence>
+			<xsd:element name="OptionsGroup" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Option" type="OptionType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+					<xsd:attribute name="Group" type="NullableHexStringType" use="required"/>
+					<xsd:attribute name="Label" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Option" type="OptionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:ID"/>
+		<xsd:attribute name="DefaultLabel" type="xsd:string"/>
+		<xsd:attribute name="DefaultColumnLabel" type="xsd:string"/>
+		<xsd:attribute name="Source" type="xsd:IDREF"/>
+		<xsd:attribute name="GroupsSource" type="xsd:IDREF"/>
+	</xsd:complexType>
+	<xsd:complexType name="OptionType">
+		<xsd:attribute name="Value" type="NullableHexRangeStringType" use="required"/>
+		<xsd:attribute name="RowColor" type="xsd:IDREF" use="optional"/>
+		<xsd:attribute name="Label" type="xsd:string"/>
+		<xsd:attribute name="ColumnLabel" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ColumnMergeModeValueType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Append"/>
+			<xsd:enumeration value="Replace"/>
+			<xsd:enumeration value="Insert"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EndiannessValueType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Little"/>
+			<xsd:enumeration value="Big"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="BreakType">
+		<xsd:attribute name="Target" type="BreakTypeValueType"/>
+		<xsd:attribute name="LayerName" type="xsd:string" use="optional"/>
+		<xsd:attribute name="FieldName" type="xsd:QName" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="BreakTypeValueType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NextLayer"/>
+			<xsd:enumeration value="Layer"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TriggerType">
+		<xsd:sequence>
+			<xsd:element name="Condition" type="ConditionType" minOccurs="0"/>
+			<xsd:element name="Conditions" type="ConditionsType" minOccurs="0"/>
+			<xsd:element name="Parameter" type="ParameterType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="Type" type="TriggerTypeValueType" use="required"/>
+		<xsd:attribute name="Action" type="TriggerActionValueType" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="TriggerTypeValueType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BeforeDecoding"/>
+			<xsd:enumeration value="AfterDecoding"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TriggerActionValueType">
+		<xsd:restriction base="xsd:string">
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ConditionType">
+		<xsd:attribute name="Source" type="xsd:IDREF"/>
+		<xsd:attribute name="Value" type="NullableHexRangeStringType"/>
+	</xsd:complexType>
+	<xsd:complexType name="ConditionsType">
+		<xsd:sequence>
+			<xsd:element name="Condition" type="ConditionType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="MatchMode" type="MatchModeType" default="All"/>
+	</xsd:complexType>
+	<xsd:complexType name="ParameterType">
+		<xsd:attribute name="Name" type="xsd:QName" use="required"/>
+		<xsd:attribute name="VariableName" type="xsd:IDREF"/>
+	</xsd:complexType>
+	<xsd:complexType name="TriggersType">
+		<xsd:sequence>
+			<xsd:element name="Trigger" type="TriggerType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="Protocol" type="ProtocolType"/>
+	<xsd:complexType name="ProtocolType">
+		<xsd:sequence>
+			<xsd:element name="Layers" type="LayersType"/>
+		</xsd:sequence>
+		<xsd:attribute name="Name" type="xsd:string" use="required"/>
+		<xsd:attribute name="ShortName" type="xsd:string"/>
+		<xsd:attribute name="Number" type="HexStringType" use="required"/>
+		<xsd:attribute name="Language" type="xsd:language" default="en-us"/>
+		<xsd:attribute name="Version" type="VersionType" default="1.0.0"/>
+		<xsd:attribute name="IsHidden" type="xsd:boolean" default="false"/>
+	</xsd:complexType>
+	<xsd:complexType name="LayersType">
+		<xsd:sequence>
+			<xsd:element name="Layer" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="Source" type="xsd:anyURI" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="VersionType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[1-9].[0-9]+.[0-9]+"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="HexStringType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="0x[0-9A-F]+"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NullableHexStringType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(0x[0-9A-F]+|null)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NullableHexRangeStringType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(0x[0-9A-F]+(-0x[0-9A-F]+)?(,0x[0-9A-F]+(-0x[0-9A-F]+)?)*|null)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
