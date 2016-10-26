@@ -30,10 +30,10 @@
     TORT (INCLUDING NEGLICENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF UBILOGIX HAS 
     BEEN ADVICED OF THE POSSIBLITY OF SUCH DAMAGE. 
       
-    Copyright (C) 2013 Ubilogix International, Inc. All rights reserved. 
+    Copyright (C) 2016 Ubilogix International, Inc. All rights reserved. 
       
 -->
-<xsd:schema xmlns="urn:ubilogix:decoders" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ubilogix:decoders" elementFormDefault="qualified" version="1.0.12">
+<xsd:schema xmlns="urn:ubilogix:decoders" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ubilogix:decoders" elementFormDefault="qualified" version="1.0.13">
 	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
 	<xsd:element name="Layer" type="LayerType"/>
 	<xsd:complexType name="LayerType">
@@ -60,7 +60,18 @@
 	</xsd:complexType>
 	<xsd:simpleType name="ColorValueType">
 		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="#[0-9A-F]{6}|#[0-9A-F]{8}"/>
+      <xsd:enumeration value="Red"/>
+      <xsd:enumeration value="Orange"/>
+      <xsd:enumeration value="Yellow"/>
+      <xsd:enumeration value="LightBlue"/>
+      <xsd:enumeration value="Purple"/>
+      <xsd:enumeration value="Pink"/>
+      <xsd:enumeration value="LightGreen"/>
+      <xsd:enumeration value="DarkGreen"/>
+      <xsd:enumeration value="DarkBlue"/>
+      <xsd:enumeration value="Brown"/>
+      <xsd:enumeration value="Black"/>
+      <xsd:enumeration value="Gray"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:complexType name="VariablesType">
@@ -380,6 +391,99 @@
 	</xsd:simpleType>
 	<xsd:simpleType name="TriggerActionValueType">
 		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PopNetDecrypt"/>
+			<xsd:enumeration value="PopNetAddNodeToSource"/>
+			<xsd:enumeration value="PopNetHandleAssociationResponse"/>
+			<xsd:enumeration value="ZigBeeMacDecrypt"/>
+			<xsd:enumeration value="ZigBeeNwkDecrypt"/>
+			<xsd:enumeration value="ZigBeeApsDecrypt"/>
+			<xsd:enumeration value="ZigBeeRf4CeDecrypt"/>
+			<xsd:enumeration value="ZigBeeIpMleDecrypt"/>
+			<xsd:enumeration value="ZigBeeKeysSkke1"/>
+			<xsd:enumeration value="ZigBeeKeysSkke2"/>
+			<xsd:enumeration value="ZigBeeKeysAddApsMasterKey"/>
+			<xsd:enumeration value="ZigBeeKeysAddAssocApsMasterKey"/>
+			<xsd:enumeration value="ZigBeeKeysAddApsLinkKey"/>
+			<xsd:enumeration value="ZigBeeKeysAddNwkKey"/>
+			<xsd:enumeration value="ZigBeeKeysAddGreenPowerKey"/>
+			<xsd:enumeration value="ZigBeeGreenPowerDecrypt"/>
+			<xsd:enumeration value="VariableSet"/>
+      <xsd:enumeration value="FieldNameValueMathOperation" />
+      <xsd:enumeration value="FieldValueSet" />
+			<xsd:enumeration value="UpdatePanStats"/>
+			<xsd:enumeration value="CompareWithProtocolInUse"/>
+			<xsd:enumeration value="AddNodeToSource"/>
+			<xsd:enumeration value="AddNodeToSourceUsingAddr"/>
+			<xsd:enumeration value="MarkAsPendingAck"/>
+			<xsd:enumeration value="CheckPendingAck"/>
+			<xsd:enumeration value="HandleAssociationRequest"/>
+			<xsd:enumeration value="HandleAssociationResponse"/>
+			<xsd:enumeration value="HandleBeacon"/>
+			<xsd:enumeration value="HandleNwkLeave"/>
+			<xsd:enumeration value="HandleNwkRejoin"/>
+			<xsd:enumeration value="HandleNwkLinkStatus"/>
+			<xsd:enumeration value="HandleZdpDeviceAnnounce"/>
+			<xsd:enumeration value="HandleActiveEndpointsList"/>
+			<xsd:enumeration value="HandleClusterEndpoints"/>
+			<xsd:enumeration value="HandleApsFragmentedPayloadStart"/>
+			<xsd:enumeration value="HandleApsFragmentedPayload"/>
+			<xsd:enumeration value="Rf4CeHandlePairRequest"/>
+			<xsd:enumeration value="Rf4CeHandlePairResponse"/>
+			<xsd:enumeration value="Rf4CeHandleKeySeed"/>
+			<xsd:enumeration value="HandleSixLoWpanFragmentedPayload"/>
+			<xsd:enumeration value="SixLowPanDecompressIpV6Header"/>
+			<xsd:enumeration value="ZllHandleScanResponse"/>
+			<xsd:enumeration value="ZllHandleEncryptedKey"/>
+			<xsd:enumeration value="AsciiBytesToSpace"/>
+			<xsd:enumeration value="AsciiBytesToCarriageReturn"/>
+			<xsd:enumeration value="AsciiBytesToLessThan"/>
+			<xsd:enumeration value="AsciiBytesToColon"/>
+			<xsd:enumeration value="ConvertToIntStatusHttp"/>
+			<xsd:enumeration value="AsciiBytesToBody"/>
+			<xsd:enumeration value="SetPacketEncryptedStatus"/>
+			<xsd:enumeration value="BytesToEndOfQuestionResponse"/>
+			<xsd:enumeration value="FormatJennetAddress"/>
+			<xsd:enumeration value="FormatJennetMulticastAddress"/>
+			<xsd:enumeration value="ZigBeeApsTunneledDecrypt"/>
+			<xsd:enumeration value="HandleEapFragmentedPayload"/>
+			<xsd:enumeration value="CoapBytestoPayloadMarker"/>
+			<xsd:enumeration value="CoapOptionsDelta"/>
+			<xsd:enumeration value="CoapContentFormat"/>
+			<xsd:enumeration value="CoapOptionsDeltaRestart"/>
+			<xsd:enumeration value="CoapNewOption"/>
+			<xsd:enumeration value="CoapTwoByteOptionExtented"/>
+			<xsd:enumeration value="CoapTwoByteLengthOptionExtented"/>
+			<xsd:enumeration value="CoapOneByteLengthOptionExtented"/>
+			<xsd:enumeration value="HttpNextLayer"/>
+			<xsd:enumeration value="EapPaddingBits"/>
+			<xsd:enumeration value="CertNumberOfSubsequentOctets"/>
+			<xsd:enumeration value="CertBytestoEndofContents"/>
+			<xsd:enumeration value="UtcStringToDateTime"/>
+			<xsd:enumeration value="RplSourceHeaderAddressSize"/>
+      <xsd:enumeration value="FormatYearLabelZclDateType"/>
+      <xsd:enumeration value="ThreadInterface"/>
+      <xsd:enumeration value="HandledMleChlidRespose" />
+      <xsd:enumeration value="HandledDhcpv6SolicitResponse" />
+      <xsd:enumeration value="Mac2006Decrypt" />
+      <xsd:enumeration value="ThreadAdvertisementHandled" />
+      <xsd:enumeration value="ThreadMleSecurity" />
+      <xsd:enumeration value="MleRoutersMaskToRouterId" />
+      <xsd:enumeration value="CoapUriPathFormat" />
+      <xsd:enumeration value="ThreadCoapOptionsPayload" />
+      <xsd:enumeration value="ThreadCoapAddressSolicitHandled" />
+      <xsd:enumeration value="HandledImageBlockResponse" />
+      <xsd:enumeration value="HandledQueryNextImageResponse" />
+      <xsd:enumeration value="HandledUpgradeEndRequest" />
+      <xsd:enumeration value="ThreadCoapAddressSolicitResponseHandled" />
+      <xsd:enumeration value="SE2ContentType" />
+      <xsd:enumeration value="SixloDecompressedAddress" />
+      <xsd:enumeration value="RouterIdToRoutingLocator" />
+      <xsd:enumeration value="CoapRoutersMaskToRouterId" />
+      <xsd:enumeration value="ChilUpdateResponseHandled" />
+      <xsd:enumeration value="HandledMleNetworkData" />
+      <xsd:enumeration value="ZllTouchlinkHandled" />
+      <xsd:enumeration value="ZigBeeSpecificCommandDefHandled" />
+      <xsd:enumeration value="CoapCustomPortMatch" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:complexType name="ConditionType">
@@ -395,6 +499,7 @@
 	<xsd:complexType name="ParameterType">
 		<xsd:attribute name="Name" type="xsd:QName" use="required"/>
 		<xsd:attribute name="VariableName" type="xsd:IDREF"/>
+    <xsd:attribute name="Value" type="NullableHexStringType" />
 	</xsd:complexType>
 	<xsd:complexType name="TriggersType">
 		<xsd:sequence>
